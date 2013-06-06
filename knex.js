@@ -10,8 +10,7 @@
 
   // Required dependencies.
   var _ = require('underscore');
-  var When = require('when');
-
+  var when = require('when');
   var push = Array.prototype.push;
 
   // `Knex` is the root namespace and a chainable function: `Knex('tableName')`
@@ -105,7 +104,7 @@
     // Runs the query on the current builder instance and returns a promise.
     runQuery: function() {
       if (this.transaction) {
-        if (!this.transaction.connection) return When.reject(new Error('The transaction has already completed.'));
+        if (!this.transaction.connection) return when.reject(new Error('The transaction has already completed.'));
         this._connection = this.transaction.connection;
       }
 
@@ -933,7 +932,7 @@
 
       // Initiate a deferred object, so we know when the
       // transaction completes or fails, we know what to do.
-      var dfd = When.defer();
+      var dfd = when.defer();
 
       // Call the container with the transaction
       // commit & rollback objects
@@ -1479,6 +1478,76 @@
     _cleanBindings: function() {
       return [];
     }
+  });
+
+  // Knex.Migrate
+  // -------
+  var initMigrate = function(Target, client) {
+
+    // Top level object for Migration related functions
+    var Migrate = Target.Migrate = {
+      _config: null,
+      config: function(attr) {
+        if (!attr) return this._config;
+        this._config = attr;
+        return this;
+      }
+    };
+
+    _.each(['currentVersion', 'listVersions', 'to', 'up', 'down'], function(method) {
+
+      Migrate[method] = function() {
+        var migration = new Migration();
+        migration[method].apply(migration, arguments);
+      };
+
+    });
+
+  };
+
+  // The new migration we're performing.
+  var Migration = function(config) {
+    this._config = config;
+  };
+
+  _.extend(Migration.prototype, Common, {
+
+    // Retrieves and returns the current migration version
+    // we're on, as a promise.
+    currentVersion: function() {
+
+    },
+
+    // Lists all available migration versions, as an array.
+    versions: function() {
+
+    },
+
+    // Migrate to a specific version
+    to: function() {
+
+    },
+
+    // Migrate up one version
+    up: function() {
+      return when.all([this.versions(), this.currentVersion()]).spread(function(list, currentVersion) {
+        var spot = _.indexOf(list, currentVersion);
+        if (spot === -1) throw new Error('Error migrating up: current migration not found');
+        if (spot + 1 === list.length) throw new Error('Error migrating up: already on latest migration');
+        return list;
+      });
+    },
+
+    // Migrate down one version
+    down: function() {
+      return when.all([this.versions(), this.currentVersion()]).spread(function(list, currentVersion) {
+        var spot = _.indexOf(list, currentVersion);
+        if (spot === -1) throw new Error('Error migrating down: current migration not found');
+        if (spot + 1 === list.length) throw new Error('Error migrating down: already on latest migration');
+        return list;
+      });
+    }
+
   });
 
   // Simple capitalization of a word.
