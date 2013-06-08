@@ -110,7 +110,11 @@ module.exports = function(Knex, dbName, resolver) {
     });
 
     it("supports the <> operator", function(ok) {
-        Knex('accounts').where('id', '<>', 2).select('email', 'logins').then(resolver(ok), ok);
+      Knex('accounts').where('id', '<>', 2).select('email', 'logins').then(resolver(ok), ok);
+    });
+
+    it("Allows for Knex.Raw passed to the `where` clause", function(ok) {
+      Knex('accounts').where(Knex.Raw('id = 2')).select('email', 'logins').then(resolver(ok), ok);
     });
 
   });
