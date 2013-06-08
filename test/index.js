@@ -1,4 +1,4 @@
-var When   = require('when');
+var when   = require('when');
 var _      = require('underscore');
 var Knex   = require('../knex');
 var conn   = require(process.env.KNEX_TEST || './shared/config');
@@ -28,7 +28,7 @@ var then = function(success, error) {
       object: resp,
       string: {
         sql: ctx.sql,
-        bindings: bindings        
+        bindings: bindings
       }
     };
   });

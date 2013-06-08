@@ -1,4 +1,4 @@
-var When        = require('when');
+var when        = require('when');
 var _           = require('underscore');
 var util        = require('util');
 var base        = require('./base');
@@ -18,9 +18,9 @@ _.extend(PostgresClient.prototype, base.protoProps, {
     var emptyConnection = !builder._connection;
     var debug = this.debug || builder._debug;
     var instance = this;
-    return When((builder._connection || this.getConnection()))
+    return when((builder._connection || this.getConnection()))
       .then(function(conn) {
-        var dfd = When.defer();
+        var dfd = when.defer();
 
         // Bind all of the ? to numbered vars.
         var questionCount = 0;

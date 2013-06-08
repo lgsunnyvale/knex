@@ -1,4 +1,4 @@
-var When        = require('when');
+var when        = require('when');
 var nodefn      = require('when/node/function');
 var _           = require('underscore');
 var util        = require('util');
@@ -19,9 +19,9 @@ _.extend(Sqlite3Client.prototype, base.protoProps, {
     var emptyConnection = !builder._connection;
     var debug = this.debug || builder._debug;
     var instance = this;
-    return When((builder._connection || this.getConnection()))
+    return when((builder._connection || this.getConnection()))
       .then(function(conn) {
-        var dfd = When.defer();
+        var dfd = when.defer();
         var method = (builder.type === 'insert' || builder.type === 'update') ? 'run' : 'all';
 
         // If we have a debug flag set, console.log the query.

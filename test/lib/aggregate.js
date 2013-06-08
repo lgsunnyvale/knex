@@ -1,4 +1,4 @@
-var When = require("when");
+var when = require("when");
 
 module.exports = function(Knex, dbName, resolver) {
 
@@ -15,7 +15,7 @@ module.exports = function(Knex, dbName, resolver) {
   });
 
   it("support the groupBy function", function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').count('id').groupBy('logins'),
         Knex('accounts').count('id').groupBy('first_name')
       ]).then(resolver(ok, true), ok);

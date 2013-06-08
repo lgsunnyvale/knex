@@ -1,8 +1,8 @@
-var When = require('when');
+var when = require('when');
 module.exports = function(Knex, dbName, resolver) {
 
   describe(dbName, function() {
-  
+
     it('runs with no conditions', function(ok) {
       Knex('accounts').select().then(resolver(ok), ok);
     });
@@ -12,9 +12,9 @@ module.exports = function(Knex, dbName, resolver) {
         .select()
         .orderBy('id', 'asc').then(resolver(ok), ok);
     }),
-    
+
     it('does simple "where" cases', function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').where('id', 1).select('first_name', 'last_name'),
         Knex('accounts').where('id', '>', 1).select(['email', 'logins']),
         Knex('accounts').where({'id': 1}).select('*'),
@@ -25,27 +25,27 @@ module.exports = function(Knex, dbName, resolver) {
     });
 
     it('has a "distinct" clause', function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').select().distinct('email').where('logins', 2).orderBy('email'),
         Knex('accounts').distinct('email').select().orderBy('email')
       ]).then(resolver(ok, true), ok);
     });
 
     it('does "orWhere" cases', function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').where('id', 1).orWhere('id', '>', 2).select('first_name', 'last_name')
         // More tests can be added here.
       ]).then(resolver(ok, true), ok);
     });
 
     it('does "andWhere" cases', function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').select('first_name', 'last_name', 'about').where('id', 1).andWhere('email', 'test@example.com')
       ]).then(resolver(ok, true), ok);
     });
 
     it('takes a function to wrap nested where statements', function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').where(function() {
           this.where('id', 2);
           this.orWhere('id', 3);
@@ -54,7 +54,7 @@ module.exports = function(Knex, dbName, resolver) {
     });
 
     it('handles "where in" cases', function(ok) {
-      When.all([
+      when.all([
         Knex('accounts').whereIn('id', [1, 2, 3]).select()
       ]).then(resolver(ok, true), ok);
     });
@@ -102,11 +102,11 @@ module.exports = function(Knex, dbName, resolver) {
     });
 
     it('does sub-selects', function(ok) {
-    
+
       Knex('accounts').whereIn('id', function() {
         this.select('account_id').from('test_table_two').where('status', 1);
       }).select('first_name', 'last_name').then(resolver(ok), ok);
-    
+
     });
 
     it("supports the <> operator", function(ok) {

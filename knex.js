@@ -1482,73 +1482,32 @@
 
   // Knex.Migrate
   // -------
-  var initMigrate = function(Target, client) {
+  var initMigrate = function(Target) {
 
     // Top level object for Migration related functions
     var Migrate = Target.Migrate = {
+
       _config: null,
+
       config: function(attr) {
         if (!attr) return this._config;
         this._config = attr;
         return this;
       }
+
     };
 
-    _.each(['currentVersion', 'listVersions', 'to', 'up', 'down'], function(method) {
+    _.each(['initialize', 'currentVersion', 'listVersions', 'to'], function(method) {
 
       Migrate[method] = function() {
-        var migration = new Migration();
-        migration[method].apply(migration, arguments);
+        var Migration = require('./lib/migration');
+        var migration = new Migration(Target, this._config);
+        return migration[method].apply(migration, arguments);
       };
 
     });
 
   };
-
-  // The new migration we're performing.
-  var Migration = function(config) {
-    this._config = config;
-  };
-
-  _.extend(Migration.prototype, Common, {
-
-    // Retrieves and returns the current migration version
-    // we're on, as a promise.
-    currentVersion: function() {
-
-    },
-
-    // Lists all available migration versions, as an array.
-    versions: function() {
-
-    },
-
-    // Migrate to a specific version
-    to: function() {
-
-    },
-
-    // Migrate up one version
-    up: function() {
-      return when.all([this.versions(), this.currentVersion()]).spread(function(list, currentVersion) {
-        var spot = _.indexOf(list, currentVersion);
-        if (spot === -1) throw new Error('Error migrating up: current migration not found');
-        if (spot + 1 === list.length) throw new Error('Error migrating up: already on latest migration');
-        return list;
-      });
-    },
-
-    // Migrate down one version
-    down: function() {
-      return when.all([this.versions(), this.currentVersion()]).spread(function(list, currentVersion) {
-        var spot = _.indexOf(list, currentVersion);
-        if (spot === -1) throw new Error('Error migrating down: current migration not found');
-        if (spot + 1 === list.length) throw new Error('Error migrating down: already on latest migration');
-        return list;
-      });
-    }
-
-  });
 
   // Simple capitalization of a word.
   var capitalize = function(word) {
@@ -1631,9 +1590,11 @@
     // Initialize the schema builder methods.
     if (name === 'main') {
       initSchema(Knex, client);
+      initMigrate(Knex);
     }
 
     initSchema(Target, client);
+    initMigrate(Target);
 
     // Specifically set the client on the current target.
     Target.client = client;

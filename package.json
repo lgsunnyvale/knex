@@ -1,10 +1,23 @@
 {
   "name": "knex",
   "version": "0.1.4",
+  "author": "Tim Griesser",
   "description": "A fun, multi-dialect SQL query builder.",
+  "homepage": "http://knexjs.org",
   "main": "knex.js",
+  "bin": {
+    "knex": "./bin/knex"
+  },
+  "scripts": {
+    "test": "mocha -R spec test/index.js"
+  },
   "directories": {
     "test": "test"
+  },
+  "dependencies": {
+    "when": ">=2.1.0",
+    "underscore": "~1.4.4",
+    "generic-pool": "~2.0.3"
   },
   "devDependencies": {
     "mocha": "1.9.x",
@@ -13,15 +26,10 @@
     "pg": "~1.1.0",
     "sqlite3": "~2.1.7"
   },
-  "dependencies": {
-    "when": ">=2.1.0",
-    "underscore": "~1.4.4",
-    "generic-pool": "~2.0.3"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tgriesser/knex.git"
   },
-  "scripts": {
-    "test": "mocha -R spec test/index.js"
-  },
-  "repository": "https://github.com/tgriesser/knex",
   "keywords": [
     "sql",
     "query",
@@ -32,6 +40,8 @@
     "sqlite3",
     "sqlite"
   ],
-  "author": "Tim Griesser",
+  "engines": {
+    "node": ">=0.6.0"
+  },
   "license": "MIT"
 }
