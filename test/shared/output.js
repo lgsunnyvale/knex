@@ -2,47 +2,19 @@ module.exports = {
   string: {
     'schema.1': {
       mysql: {
-        sql: ['drop table if exists `test_table_one`'],
+        sql: ['drop table if exists `accounts`'],
         bindings: []
       },
       postgres: {
-        sql: ['drop table if exists "test_table_one"'],
+        sql: ['drop table if exists "accounts"'],
         bindings: []
       },
       sqlite3: {
-        sql: ['drop table if exists "test_table_one"'],
+        sql: ['drop table if exists "accounts"'],
         bindings: []
       }
     },
     'schema.2': {
-      mysql: {
-        sql: ['create table `test_table_one` (`id` int(11) not null auto_increment primary key, `first_name` varchar(255) not null, `last_name` varchar(255) not null, `email` varchar(255) null, `logins` int(11) not null default \'1\', `about` text not null, `created_at` timestamp default 0 not null, `updated_at` timestamp default 0 not null) default character set utf8 engine = InnoDB','alter table `test_table_one` add unique test_table_one_email_unique(`email`)','alter table `test_table_one` add index test_table_one_logins_index(`logins`)'],
-        bindings: []
-      },
-      postgres: {
-        sql: ['create table "test_table_one" ("id" serial primary key not null, "first_name" varchar(255) not null, "last_name" varchar(255) not null, "email" varchar(255) null, "logins" integer not null default \'1\', "about" text not null, "created_at" timestamp not null, "updated_at" timestamp not null)','alter table "test_table_one" add constraint test_table_one_email_unique unique ("email")','create index test_table_one_logins_index on "test_table_one" ("logins")'],
-        bindings: []
-      },
-      sqlite3: {
-        sql: ['create table "test_table_one" ("id" integer null primary key autoincrement, "first_name" varchar null, "last_name" varchar null, "email" varchar null, "logins" integer null default \'1\', "about" text null, "created_at" datetime null, "updated_at" datetime null)','create unique index test_table_one_email_unique on "test_table_one" ("email")','create index test_table_one_logins_index on "test_table_one" ("logins")'],
-        bindings: []
-      }
-    },
-    'schema.3': {
-      mysql: {
-        sql: ['create table `test_table_two` (`id` int(11) not null auto_increment primary key, `account_id` int(11) not null, `details` text not null, `status` tinyint not null) default character set utf8 engine = InnoDB'],
-        bindings: []
-      },
-      postgres: {
-        sql: ['create table "test_table_two" ("id" serial primary key not null, "account_id" integer not null, "details" text not null, "status" smallint not null)'],
-        bindings: []
-      },
-      sqlite3: {
-        sql: ['create table "test_table_two" ("id" integer null primary key autoincrement, "account_id" integer null, "details" text null, "status" tinyint null)'],
-        bindings: []
-      }
-    },
-    'schema.4': {
       mysql: {
         sql: ['create table `test_table_three` (`main` int(11) not null, `paragraph` text not null) default character set utf8 engine = InnoDB','alter table `test_table_three` add primary key test_table_three_main_primary(`main`)'],
         bindings: []
@@ -56,7 +28,7 @@ module.exports = {
         bindings: []
       }
     },
-    'schema.5': {
+    'schema.3': {
       mysql: {
         sql: ['alter table `test_table_one` add `phone` varchar(255) null'],
         bindings: []
@@ -70,7 +42,7 @@ module.exports = {
         bindings: []
       }
     },
-    'schema.6': {
+    'schema.4': {
       mysql: {
         sql: ['drop table if exists `items`'],
         bindings: []
@@ -84,7 +56,7 @@ module.exports = {
         bindings: []
       }
     },
-    'schema.7': {
+    'schema.5': {
       mysql: {
         sql: ['select * from information_schema.tables where table_schema = ? and table_name = ?'],
         bindings: ['test_table_two']
@@ -98,7 +70,7 @@ module.exports = {
         bindings: ['test_table_two']
       }
     },
-    'schema.8': {
+    'schema.6': {
       mysql: {
         sql: ['rename table `test_table_one` to `accounts`'],
         bindings: []
@@ -112,7 +84,7 @@ module.exports = {
         bindings: []
       }
     },
-    'schema.9': {
+    'schema.7': {
       mysql: {
         sql: ['drop table `test_table_three`'],
         bindings: []

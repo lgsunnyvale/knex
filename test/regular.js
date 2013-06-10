@@ -5,7 +5,7 @@ var dev = parseInt(process.env.KNEX_DEV, 10);
 var out = (dev ? require('./index').output : require('./shared/output'));
 var assert = require('assert');
 
-module.exports = function(Knex, dbType) {
+module.exports = function(Knex, dbType, regularThen) {
 
   var dfd = when.defer();
 
@@ -23,7 +23,7 @@ module.exports = function(Knex, dbType) {
           val(ok, true)(output);
         }, function(err) {
           ok(err);
-        }, dbType);
+        }, dbType, regularThen);
       });
 
       describe('Inserts', function() {

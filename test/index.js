@@ -57,8 +57,8 @@ describe('Knex', function() {
     Sqlite3[item].prototype.then = then;
   });
 
-  require('./regular')(Knex, 'mysql');
-  require('./regular')(Postgres, 'postgres');
-  require('./regular')(Sqlite3, 'sqlite3');
+  require('./regular')(Knex, 'mysql', regularThen);
+  require('./regular')(Postgres, 'postgres', regularThen);
+  require('./regular')(Sqlite3, 'sqlite3', regularThen);
 
 });
